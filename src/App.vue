@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+      <el-menu mode="horizontal">
         <el-menu-item index="1">处理中心</el-menu-item>
         <el-submenu index="2">
           <template slot="title">我的工作台</template>
@@ -19,8 +19,9 @@
         <el-menu-item index="4">订单管理</el-menu-item>
     </el-menu>
     </el-header>
-    <el-container>
-      <el-aside width="200px">Aside</el-aside>
+    <el-container >
+      <el-aside style="height:100vh;width:65px"><Sider/></el-aside>
+          
       <el-main>Main</el-main>
     </el-container>
   </el-container>
@@ -28,8 +29,11 @@
 </template>
 
 <script>
+import Sider from './components/Sider'
 export default {
-  name: 'App',
+  components:{
+    Sider,
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
@@ -51,7 +55,7 @@ export default {
   }
   
   .el-aside {
-    background-color: #D3DCE6;
+    
     color: #333;
     text-align: center;
     line-height: 200px;
