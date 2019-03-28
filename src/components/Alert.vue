@@ -1,7 +1,7 @@
 <template>
    <div>
         <el-card class="box-card">
-            <p>asd</p>
+            <p>asdasddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</p>
         </el-card>
         
    </div>

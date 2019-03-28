@@ -23,16 +23,12 @@
       <el-aside style="height:100vh;width:65px"><Sider/></el-aside>
           
       <div>
-        <el-main class="wrapper" ref="wrapper" >
-          <div style="width:2000px">
-            <el-row style="flex-wrap:nowrap" type="flex">  
-              <el-col :xs="24" :sm="12" :md="8" :lg="8"><Alert/></el-col>
-              <el-col :xs="24" :sm="12" :md="8" :lg="8"><Alert/></el-col>
-              <el-col :xs="24" :sm="12" :md="8" :lg="8"><Alert/></el-col>
-              <el-col :xs="24" :sm="12" :md="8" :lg="8"><Alert/></el-col>
-              <el-col :xs="24" :sm="12" :md="8" :lg="8"><Alert/></el-col> 
-            </el-row>
+        <el-main  >
+          <div class="wrapper alerts-container" ref="wrapper" >
+    <div class="content" ref="content" :style="{ width: scrollWidth ? scrollWidth + 'px' : '100%' }">
+            <Table></Table>
           </div>  
+          </div>
         </el-main>
       </div>
     </el-container>
@@ -41,69 +37,85 @@
 </template>
 
 <script>
-import Sider from './components/Sider'
-import Alert from './components/Alert'
-import BScroll from 'better-scroll'
+import Sider from "./components/Sider";
+import Alert from "./components/Alert";
+import Bscroll from "better-scroll";
+import Table from "./components/Table";
 export default {
-  components:{
+  components: {
     Sider,
     Alert,
+    Table
   },
-  data () {
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      scrollWidth: 0
+    };
+  },
+  methods: {
+    resize() {
+      if (document.documentElement.clientWidth < 767) {
+        this.scrollWidth = 0;
+      } else {
+        // 计算宽度
+        let ls = document.querySelectorAll(".content > .el-table"),
+          width = 2000;
+        [].forEach.call(ls, el => {
+          let rect = el.getBoundingClientRect();
+          width += rect.width;
+        });
+        this.scrollWidth = width;
+      }
     }
   },
-  
-  
-  method:{
-    mounted() {
-      this.$nextTick(() => {
-        this.scroll = new Bscroll(this.$refs.wrapper, {
-          startX: 0,
-          click: true,
-          scrollX: true,
-          scrollY: false,
-          eventPassthrough: 'vertical'
-        })
-       
-      })
-  }
-  }
+  mounted() {
+    this.$nextTick(() => {
+      this.scroll = new Bscroll(this.$refs.wrapper, {
+        startX: 0,
+        click: true,
+        scrollX: true,
+        scrollY: true,
+        freeScroll: true
+      });
+    });
+    this.resize();
 
-}
+    window.addEventListener("resize", this.resize);
+  },
+  update() {
+    this.resize();
+  }
+};
 </script>
 
 <style>
-  *{
-    margin:0;
-    padding:0;
-  }
-  body{
-    overflow-x: hidden;
-  } 
-  .el-header, .el-footer {
-   
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-  }
-  
-  .el-aside {
-    
-    color: #333;
-    text-align: center;
-    line-height: 200px;
-  }
-  
-  .el-main {
-   
-    color: #333;
-    text-align: center;
-    line-height: 160px;
-  }
-  
-  
-  
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.el-header,
+.el-footer {
+  color: #333;
+  text-align: center;
+  line-height: 60px;
+}
 
+.el-aside {
+  color: #333;
+  text-align: center;
+  line-height: 200px;
+}
+.wrapper {
+  user-select: none;
+  width: 1920px;
+  overflow: hidden;
+  height: 1080px;
+}
+.content {
+  height: 1520px;
+}
 </style>
